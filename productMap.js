@@ -1,6 +1,4 @@
 var map;
-var name;
-var markersArray = [];
 
 $( document ).ready(function() {
     // drawMap()
@@ -28,14 +26,29 @@ function sortThroughData(data) {
     firstElement = JSON.parse(firstElement);
     var lat = firstElement.lat;
     var longitude = firstElement.long;
-    console.log(firstElement.image_url);
-    // addPointToMap(parseInt(lat), parseInt(longitude));
+    var productImage = firstElement.image_url;
+    var productName = firstElement.product_name;
+
+    addProductToMap(lat, longitude, productName, productImage);
 }
 
 function customMarker(latlng, args) {
     this.latlng = latlng;
     this.args = args;
     this.setMap(map);
+}
+
+function addProductToMap(lat, long, name, image_url) {
+    var newLatlng = new google.maps.LatLng( lat, long );
+    
+    var overlay = new customMarker(
+    newLatlng, 
+    {
+        img: image_url,
+        name: name,
+        marker_id: '123',
+        colour: 'Red'
+    });
 }
 
 function initialize() {
@@ -47,11 +60,6 @@ function initialize() {
     };
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    markersArray = [ 
-        { Lat:"51.6711", Lng:"-1.2828", name:"Test" }
-    ];
-
 
     customMarker.prototype = new google.maps.OverlayView();
     
@@ -122,19 +130,4 @@ function initialize() {
     customMarker.prototype.getPosition = function() {   
         return this.latlng;
     };
-    
-    markersArray.forEach(function(marker) {
-        var newLatlng = new google.maps.LatLng( marker.Lat, marker.Lng );
-        image = marker.img;
-        name = marker.name;
-    
-        var overlay = new customMarker(
-        newLatlng, 
-        {
-            img: "",
-            name: name,
-            marker_id: '123',
-            colour: 'Red'
-        });
-    });   
 }
