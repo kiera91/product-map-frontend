@@ -1,0 +1,51 @@
+#map {
+    border-style: solid;
+    border-width: 2px;
+    z-index: 5;
+}
+
+#marker {
+    position: absolute;
+    border-style: solid;
+    border-width: 5px;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
+.image_container {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: absolute;
+}
+    
+.marker_image {
+    width: 80%;
+    height: 80%;
+    top: 0px;
+    position: relative;
+}
+
+.large  {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+}
+
+.triangle {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 25px 12px 0px 12px;
+    top: 100px;
+    left: 37.5px;
+    border-color: #000000 transparent transparent transparent;
+}
+
+.triangle:active {
+    left: 137.5px;
+    top: 300px;
+}
