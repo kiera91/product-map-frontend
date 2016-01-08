@@ -16,6 +16,11 @@ $( document ).ready(function() {
 });
  
 
+    var openUrl = function(url) {
+        alert(url)
+        window.location.assign(url);
+    }
+
 function getRecentProducts() {
     // socket.send("{\"action\": \"products\"}");
 }
@@ -69,9 +74,10 @@ function initialize() {
     {
         img: "http://asset2.marksandspencer.com/is/image/mands/F14A_00962339_IS",
         name: "White Rose & Freesia Wedding Flowers - Collection 1",
-        product_link: "www.marksandspencer.com",
+        product_link: "https://www.marksandspencer.com",
         marker_id: '123',
-        colour: 'Red'
+        colour: 'Red',
+        navigateToProduct: openUrl
     });
     
     customMarker.prototype.draw = function() {
@@ -98,11 +104,12 @@ function initialize() {
                 div.dataset.marker_id = self.args.marker_id;
             }
 
-            // google.maps.event.addDomListener(div, "click", function(event) {
-            //     google.maps.event.trigger(self, "click");
+            google.maps.event.addDomListener(div, "click", function(event) {
+                google.maps.event.trigger(self, "click");
 
-            //     alert(self.latlng);
-            // });
+                alert(self.latlng);
+                self.args.navigateToProduct(self.args.product_link);
+            });
                 
             var panes = this.getPanes();
             panes.overlayImage.appendChild(div);
@@ -115,6 +122,7 @@ function initialize() {
             div.style.top = (point.y - 145) + 'px';
         }
     };
+
 
     customMarker.prototype.remove = function() {
         if (this.div) {
