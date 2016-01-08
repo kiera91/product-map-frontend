@@ -6,7 +6,7 @@ $( document ).ready(function() {
     var socket = new WebSocket("ws://localhost:4567");
 
     socket.onmessage = function(e) {
-        sortThroughData(e.data);
+        // sortThroughData(e.data);
     };
 
     socket.onopen = function(e) {
@@ -28,8 +28,9 @@ function sortThroughData(data) {
     var longitude = firstElement.long;
     var productImage = firstElement.image_url;
     var productName = firstElement.product_name;
+    var productUrl = firstElement.http_referer;
 
-    addProductToMap(lat, longitude, productName, productImage);
+    addProductToMap(lat, longitude, productName, productImage, productUrl);
 }
 
 function customMarker(latlng, args) {
@@ -38,14 +39,14 @@ function customMarker(latlng, args) {
     this.setMap(map);
 }
 
-function addProductToMap(lat, long, name, image_url) {
+function addProductToMap(lat, long, name, imageUrl, productUrl) {
     var newLatlng = new google.maps.LatLng( lat, long );
-    
     var overlay = new customMarker(
-    newLatlng, 
+    newLatlng,
     {
-        img: image_url,
+        img: imageUrl,
         name: name,
+        product_url: productUrl,
         marker_id: '123',
         colour: 'Red'
     });
@@ -56,57 +57,52 @@ function initialize() {
     var mapOptions = {
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        zoom: 13,
+        zoom: 6,
     };
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
     customMarker.prototype = new google.maps.OverlayView();
-    
-    customMarker.prototype.draw = function() 
+
+    var overlay = new customMarker(
+     new google.maps.LatLng( 51.6711, -1.2828 ),
     {
+        img: "http://asset2.marksandspencer.com/is/image/mands/F14A_00962339_IS",
+        name: "White Rose & Freesia Wedding Flowers - Collection 1",
+        product_link: "www.marksandspencer.com",
+        marker_id: '123',
+        colour: 'Red'
+    });
+    
+    customMarker.prototype.draw = function() {
         var self = this;
         var div = this.div;
         
         if (!div) {
             div = this.div = document.createElement('div');
             div.id = 'marker';
-            div.style.width = '100px';
-            div.style.height = '100px';
             div.style.cursor = 'pointer';
-    
-            var div_pointer = document.createElement('div');
-            div_pointer.className = 'triangle';
-    
-            var image_container = document.createElement('div');
-            image_container.className = 'image_container';
-    
+
+            var aTag = document.createElement('a');
+            aTag.setAttribute('href', self.args.product_link);
+            aTag.altText = self.args.name;
+            div.appendChild(aTag);
+
+
             var img = document.createElement('img');
             img.className = "marker_image";
             img.src = self.args.img;
-    
-            var name_container = document.createElement('div');
-            name_container.className = 'name_container';
-    
-            var text = document.createElement('p');
-            text.innerText = self.args.name;
-            text.className = 'text';
-    
-            div.appendChild(image_container);
-            image_container.appendChild(img);
-            div.appendChild(div_pointer);
-            div.appendChild(name_container);
-            name_container.appendChild(text);
+            div.appendChild(img);
 
             if(typeof(self.args.marker_id) !== 'undefined') {
-                div.dataset.marker_id = self.args.marker_id; 
+                div.dataset.marker_id = self.args.marker_id;
             }
 
-            google.maps.event.addDomListener(div, "click", function(event) { 
-                google.maps.event.trigger(self, "click");
+            // google.maps.event.addDomListener(div, "click", function(event) {
+            //     google.maps.event.trigger(self, "click");
 
-                alert(self.latlng);
-            });
+            //     alert(self.latlng);
+            // });
                 
             var panes = this.getPanes();
             panes.overlayImage.appendChild(div);
@@ -116,10 +112,10 @@ function initialize() {
     
         if (point) {
             div.style.left = (point.x - 50) + 'px';
-            div.style.top = (point.y - 125) + 'px';
+            div.style.top = (point.y - 145) + 'px';
         }
-    }
-    
+    };
+
     customMarker.prototype.remove = function() {
         if (this.div) {
             this.div.parentNode.removeChild(this.div);
@@ -127,7 +123,7 @@ function initialize() {
         }
     };
     
-    customMarker.prototype.getPosition = function() {   
+    customMarker.prototype.getPosition = function() {
         return this.latlng;
     };
 }
