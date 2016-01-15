@@ -18,7 +18,7 @@ $( document ).ready(function() {
 
 var openUrl = function(url) {
     window.location.assign(url);
-}
+};
 
 function getRecentProducts() {
     // socket.send("{\"action\": \"products\"}");
@@ -52,7 +52,6 @@ function addProductToMap(lat, long, name, imageUrl, productUrl) {
         name: name,
         product_url: productUrl,
         marker_id: '123',
-        colour: 'Red',
         navigateToProduct: openUrl
     });
 }
@@ -76,7 +75,6 @@ function initialize() {
         name: "White Rose & Freesia Wedding Flowers - Collection 1",
         product_link: "https://www.marksandspencer.com",
         marker_id: '123',
-        colour: 'Red',
         navigateToProduct: openUrl
     });
     
@@ -94,7 +92,6 @@ function initialize() {
             aTag.altText = self.args.name;
             div.appendChild(aTag);
 
-
             var img = document.createElement('img');
             img.className = "marker_image";
             img.src = self.args.img;
@@ -107,13 +104,15 @@ function initialize() {
             google.maps.event.addDomListener(div, "click", function(event) {
                 google.maps.event.trigger(self, "click");
 
-                alert(self.latlng);
                 self.args.navigateToProduct(self.args.product_link);
             });
                 
             var panes = this.getPanes();
             panes.overlayImage.appendChild(div);
+
         }
+        
+        setTimeout(function() { self.remove(); }, 10000);
         
         var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
     
