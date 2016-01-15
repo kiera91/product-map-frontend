@@ -16,10 +16,9 @@ $( document ).ready(function() {
 });
  
 
-    var openUrl = function(url) {
-        alert(url)
-        window.location.assign(url);
-    }
+var openUrl = function(url) {
+    window.location.assign(url);
+}
 
 function getRecentProducts() {
     // socket.send("{\"action\": \"products\"}");
@@ -53,7 +52,8 @@ function addProductToMap(lat, long, name, imageUrl, productUrl) {
         name: name,
         product_url: productUrl,
         marker_id: '123',
-        colour: 'Red'
+        colour: 'Red',
+        navigateToProduct: openUrl
     });
 }
 
