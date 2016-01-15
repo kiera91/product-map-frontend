@@ -6,7 +6,7 @@ $( document ).ready(function() {
     var socket = new WebSocket("ws://localhost:4567");
 
     socket.onmessage = function(e) {
-        // sortThroughData(e.data);
+        sortThroughData(e.data);
     };
 
     socket.onopen = function(e) {
@@ -25,14 +25,26 @@ function getRecentProducts() {
 }
 
 function sortThroughData(data) {
+            console.log(data);
+
     var parsedData = JSON.parse(data);
+    console.log("2");
     var firstElement = parsedData["productData"][0];
+    console.log(firstElement);
     firstElement = JSON.parse(firstElement);
-    var lat = firstElement.lat;
-    var longitude = firstElement.long;
-    var productImage = firstElement.image_url;
-    var productName = firstElement.product_name;
-    var productUrl = firstElement.http_referer;
+console.log("4");
+    for(var i = 0; i < parsedData["productData"]; i++) {
+        console.log("asdasdsad");
+        setTimeout(function() { extractProductData(parsedData["productData"][i]); }, 5000);
+    }
+}
+
+function extractProductData(product) {
+    var lat = product.lat;
+    var longitude = product.long;
+    var productImage = product.image_url;
+    var productName = product.product_name;
+    var productUrl = product.http_referer;
 
     addProductToMap(lat, longitude, productName, productImage, productUrl);
 }
@@ -68,16 +80,6 @@ function initialize() {
 
     customMarker.prototype = new google.maps.OverlayView();
 
-    var overlay = new customMarker(
-     new google.maps.LatLng( 51.6711, -1.2828 ),
-    {
-        img: "http://asset2.marksandspencer.com/is/image/mands/F14A_00962339_IS",
-        name: "White Rose & Freesia Wedding Flowers - Collection 1",
-        product_link: "https://www.marksandspencer.com",
-        marker_id: '123',
-        navigateToProduct: openUrl
-    });
-    
     customMarker.prototype.draw = function() {
         var self = this;
         var div = this.div;
