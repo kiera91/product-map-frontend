@@ -25,14 +25,11 @@ function getRecentProducts() {
 }
 
 function sortThroughData(data) {
-            console.log(data);
-
     var parsedData = JSON.parse(data);
-    console.log("2");
-    var firstElement = parsedData["productData"][0];
-    console.log(firstElement);
-    firstElement = JSON.parse(firstElement);
-console.log("4");
+    var productData = parsedData.productData;
+    console.log(parsedData);
+    console.log(productData);
+    console.log(length(productData);
     for(var i = 0; i < parsedData["productData"]; i++) {
         console.log("asdasdsad");
         setTimeout(function() { extractProductData(parsedData["productData"][i]); }, 5000);
