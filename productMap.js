@@ -26,13 +26,12 @@ function getRecentProducts() {
 
 function sortThroughData(data) {
     var parsedData = JSON.parse(data);
+    console.log(parsedData.productData);
     var productData = parsedData.productData;
-    console.log(parsedData);
-    console.log(productData);
-    console.log(length(productData);
-    for(var i = 0; i < parsedData["productData"]; i++) {
-        console.log("asdasdsad");
-        setTimeout(function() { extractProductData(parsedData["productData"][i]); }, 5000);
+    for(var i = 0; i < productData.length; i++) {
+        var parsedProduct = JSON.parse(productData[i]);
+        // setTimeout(function() { extractProductData(parsedProduct); }, 5000);
+        extractProductData(parsedProduct);
     }
 }
 
@@ -103,7 +102,7 @@ function initialize() {
             google.maps.event.addDomListener(div, "click", function(event) {
                 google.maps.event.trigger(self, "click");
 
-                self.args.navigateToProduct(self.args.product_link);
+                self.args.navigateToProduct(self.args.product_url);
             });
                 
             var panes = this.getPanes();
@@ -111,7 +110,7 @@ function initialize() {
 
         }
         
-        setTimeout(function() { self.remove(); }, 10000);
+        setTimeout(function() { self.remove(); }, 1000000);
         
         var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
     
